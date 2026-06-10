@@ -8,6 +8,11 @@ terraform {
 
 dependency "vpc" {
   config_path = "../vpc"
+  
+  # We MUST keep this mock output here so the plan doesn't crash!
+  mock_outputs = {
+    vpc_id = "mock-vpc-id-123"
+  }
 }
 
 inputs = {
@@ -38,14 +43,11 @@ inputs = {
   computed_ingress_with_source_security_group_id = [
     {
       rule                     = "http-80-tcp"
-      source_security_group_id = "this.security_group_id" # Self-reference or resolved via output mapping in multi-sg modules
+      source_security_group_id = "this.security_group_id" 
       description              = "Allow traffic from External ALB"
     }
   ]
 
   # 3. Data Tier Security Group (RDS MySQL)
-  # Updated rule to ensure it accepts traffic from the App Tier (Node.js) instead of everywhere
-  # Note: In a production multi-module setup, these are often split into separate blocks or maps.
-  
   egress_rules = ["all-all"]
 }

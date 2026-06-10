@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "tfr:///terraform-aws-modules/autoscaling/aws//?version=8.0.0"
+  source = "tfr:///terraform-aws-modules/autoscaling/aws//?version=9.2.1"
 }
 
 dependency "vpc" {

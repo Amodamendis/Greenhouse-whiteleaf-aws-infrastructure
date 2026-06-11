@@ -7,21 +7,23 @@ terraform {
 }
 
 inputs = {
-  repository_name = "greenhouse-backend"
+  # This MUST match the ECR_REPOSITORY variable in your GitHub Actions cicd.yml exactly
+  repository_name = "greenhouse-frontend"
 
+  # Allows your CI/CD pipeline to overwrite the 'latest' tag on every new push
   repository_image_tag_mutability = "MUTABLE"
-  repository_image_scan_on_push   = true
 
+  # SRE Guardrail: Automatically purge old images to optimize cloud storage costs
   create_lifecycle_policy = true
   repository_lifecycle_policy = jsonencode({
     rules = [
       {
         rulePriority = 1,
-        description  = "Keep only the last 5 images",
+        description  = "Keep only the newest 10 images",
         selection = {
           tagStatus   = "any",
           countType   = "imageCountMoreThan",
-          countNumber = 5
+          countNumber = 10
         },
         action = {
           type = "expire"
@@ -29,4 +31,8 @@ inputs = {
       }
     ]
   })
+
+  tags = {
+    Tier = "Frontend"
+  }
 }

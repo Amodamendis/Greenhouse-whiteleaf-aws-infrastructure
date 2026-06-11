@@ -23,6 +23,7 @@ provider "aws" {
 EOF
 }
 
+
 # 4. Generate the S3 Backend for State Management
 remote_state {
   backend = "s3"
@@ -38,6 +39,8 @@ remote_state {
     use_lockfile   = true  # <-- This replaces DynamoDB!
   }
 }
+
+
 
 # 5. Merge all YAML variables into Terraform inputs
 inputs = merge(

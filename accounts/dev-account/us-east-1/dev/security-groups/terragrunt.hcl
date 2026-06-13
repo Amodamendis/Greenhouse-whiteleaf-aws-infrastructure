@@ -1,26 +1,9 @@
-include "root" {
-  path = find_in_parent_folders()
-}
-
-terraform {
-  source = "tfr:///terraform-aws-modules/security-group/aws//?version=5.1.0"
-}
-
-dependency "vpc" {
-  config_path = "../vpc"
-  
-  # We MUST keep this mock output here so the plan doesn't crash!
-  mock_outputs = {
-    vpc_id = "mock-vpc-id-123"
-  }
-}
-
 inputs = {
   name        = "greenhouse-security-groups"
   description = "Security groups for the 3-tier greenhouse web application"
   vpc_id      = dependency.vpc.outputs.vpc_id
 
-  # 1. External ALB Security Group (Public Internet Access)
+  # 1. Allow Public Internet to hit the External ALB
   ingress_with_cidr_blocks = [
     {
       from_port   = 80
@@ -38,16 +21,24 @@ inputs = {
     }
   ]
 
-  # 2. Web Tier Security Group (React Servers)
-  # Only allows HTTP traffic originating from the External ALB Security Group
-  computed_ingress_with_source_security_group_id = [
+  # 2. Allow Internal Tiers to Talk to Each Other
+  # This opens the doors for your React app, Node app, and Database!
+  ingress_with_self = [
     {
-      rule                     = "http-80-tcp"
-      source_security_group_id = "this.security_group_id" 
-      description              = "Allow traffic from External ALB"
+      rule        = "http-80-tcp"
+      description = "Allow Frontend and Internal ALB traffic"
+    },
+    {
+      from_port   = 5000
+      to_port     = 5000
+      protocol    = "tcp"
+      description = "Allow Backend API traffic"
+    },
+    {
+      rule        = "mysql-tcp"
+      description = "Allow Database traffic (Port 3306)"
     }
   ]
 
-  # 3. Data Tier Security Group (RDS MySQL)
   egress_rules = ["all-all"]
 }

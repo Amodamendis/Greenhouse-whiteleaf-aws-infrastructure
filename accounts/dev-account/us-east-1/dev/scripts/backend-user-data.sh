@@ -1,10 +1,12 @@
 #!/bin/bash
-# 1. Update system and install Docker
-yum update -y
-yum install -y docker
+echo "Node.js Backend Server Booting Up..."
+
+# 1. Update system and install Docker using UBUNTU commands
+apt-get update -y
+apt-get install docker.io -y
 systemctl start docker
 systemctl enable docker
-usermod -aG docker ec2-user
+usermod -aG docker ubuntu
 
 # 2. Set Variables
 ACCOUNT_ID="619891987476"

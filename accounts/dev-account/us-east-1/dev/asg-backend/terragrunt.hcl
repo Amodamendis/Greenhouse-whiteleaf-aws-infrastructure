@@ -44,7 +44,14 @@ inputs = {
   iam_instance_profile_name = dependency.iam.outputs.iam_instance_profile_name
 
   vpc_zone_identifier = dependency.vpc.outputs.private_subnets
-  target_group_arns   = dependency.alb_internal.outputs.target_group_arns
+
+  traffic_source_attachments = {
+   alb = {
+    traffic_source_identifier = dependency.alb_internal.outputs.target_group_arns[0]
+    traffic_source_type       = "elbv2"
+   }
+  }
+
   health_check_type   = "EC2" 
 
   min_size         = 2

@@ -9,6 +9,8 @@ locals {
   environment = yamldecode(file(find_in_parent_folders("env.yaml", local.default_yaml_path)))
 }
 
+
+
 # 3. Generate the AWS Provider
 generate "provider" {
   path      = "provider.tf"

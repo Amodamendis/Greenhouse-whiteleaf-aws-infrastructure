@@ -39,16 +39,18 @@ inputs = {
   # Target Group: This is the "waiting room" where the ALB sends traffic
   target_groups = [
     {
-      name_prefix      = "app-"
+      name_prefix      = "app-tg"
       backend_protocol = "HTTP"
-      backend_port     = 8080 # The port your Node.js app runs on
+      
+      # FIX: Align to the Node.js server.js port
+      backend_port     = 4000 
       target_type      = "instance"
       
-      # The ALB will constantly "ping" this path to make sure your Node.js app hasn't crashed
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/health" # Make sure your Node.js app has a basic GET /health route!
+        # FIX: Align to the exact string in server.js
+        path                = "/api/health" 
         healthy_threshold   = 3
         unhealthy_threshold = 3
         timeout             = 6

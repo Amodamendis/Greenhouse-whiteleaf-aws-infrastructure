@@ -46,8 +46,8 @@ inputs = {
       description = "Allow traffic from External ALB to React servers"
     },
     {
-      from_port   = 5000
-      to_port     = 5000
+      from_port   = 4000
+      to_port     = 4000
       protocol    = "tcp"
       description = "Allow Node.js Backend API traffic"
     },

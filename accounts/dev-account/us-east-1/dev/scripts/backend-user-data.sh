@@ -21,4 +21,4 @@ aws ecr get-login-password --region $REGION | docker login --username AWS --pass
 docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
 
 # 5. Run the Container mapping host port 5000 to container port 5000
-docker run -d --name backend-app --restart always -p 5000:5000 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+docker run -d --name backend-app --restart always -p 4000:4000 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG

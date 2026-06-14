@@ -38,7 +38,7 @@ inputs = {
 
   target_groups = [
     {
-      name_prefix      = "web-"
+      name_prefix      = "web-tg"
       backend_protocol = "HTTP"
       backend_port     = 80 # Assuming React is served via Nginx on port 80
       target_type      = "instance"

@@ -6,10 +6,11 @@ terraform {
   source = "tfr:///terraform-aws-modules/autoscaling/aws//?version=9.2.1"
 }
 
+# 1. FIX: Grab the private subnets instead of public
 dependency "vpc" {
   config_path = "../vpc"
   mock_outputs = {
-    public_subnets = ["mock-pub-subnet-1", "mock-pub-subnet-2"]
+    private_subnets = ["mock-subnet-1", "mock-subnet-2"]
   }
 }
 
@@ -43,18 +44,15 @@ inputs = {
   security_groups           = [dependency.security_groups.outputs.security_group_id]
   iam_instance_profile_name = dependency.iam.outputs.iam_instance_profile_name
 
-  vpc_zone_identifier = dependency.vpc.outputs.public_subnets
+  # 2. FIX: Place the servers in the Private Subnet so they use the NAT Gateway
+  vpc_zone_identifier = dependency.vpc.outputs.private_subnets
   target_group_arns   = dependency.alb_external.outputs.target_group_arns
   health_check_type   = "EC2"
-
-  # Force AWS to assign a Public IP so instances can reach the internet
-  associate_public_ip_address = true
 
   min_size         = 2
   max_size         = 4
   desired_capacity = 2
 
-  # Connect directly to your external frontend script
   user_data = base64encode(file("../scripts/frontend-user-data.sh"))
 
   tags = {

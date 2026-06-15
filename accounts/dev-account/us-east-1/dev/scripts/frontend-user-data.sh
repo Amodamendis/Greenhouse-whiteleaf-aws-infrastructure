@@ -1,9 +1,10 @@
 #!/bin/bash
 echo "React Server Booting Up..."
 
-# Update system and install Docker AND awscli
+# Update system and install Docker
 apt-get update -y
-apt-get install docker.io awscli -y
+apt-get install docker.io python3-pip -y
+pip3 install awscli
 systemctl start docker
 systemctl enable docker
 usermod -aG docker ubuntu

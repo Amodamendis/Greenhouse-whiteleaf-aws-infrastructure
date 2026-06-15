@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "Node.js Backend Server Booting Up..."
 
-# 1. Update system and install Docker using UBUNTU commands
+# 1. Update system and install Docker AND awscli
 apt-get update -y
-apt-get install docker.io -y
+apt-get install docker.io awscli -y   # ← ADD awscli HERE
 systemctl start docker
 systemctl enable docker
 usermod -aG docker ubuntu
@@ -20,5 +20,5 @@ aws ecr get-login-password --region $REGION | docker login --username AWS --pass
 # 4. Pull the Docker Image
 docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
 
-# 5. Run the Container mapping host port 5000 to container port 5000
+# 5. Run the Container
 docker run -d --name backend-app --restart always -p 4000:4000 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG

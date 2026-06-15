@@ -47,14 +47,12 @@ inputs = {
   # 2. FIX: Place the servers in the Private Subnet so they use the NAT Gateway
   vpc_zone_identifier = dependency.vpc.outputs.private_subnets
 
-  traffic_source_attachments = {
-   alb = {
-    traffic_source_identifier = dependency.alb_external.outputs.target_group_arns[0]
-    traffic_source_type       = "elbv2"
-   }
-  }
+  health_check_type   = "ELB"
 
-  health_check_type   = "EC2"
+  target_group_arns = dependency.alb_external.outputs.target_group_arns
+   
+  
+  create_traffic_source_attachment = true 
 
   min_size         = 2
   max_size         = 4

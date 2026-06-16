@@ -40,7 +40,7 @@ inputs = {
 
   # 2. Internal Network Rules (Frontend, Backend, Database)
   # Keeping your internal self-referencing structure, but adding 5000 and 3306
-  ingress_with_self = [
+ ingress_with_self = [
     {
       rule        = "http-80-tcp"
       description = "Allow traffic from External ALB to React servers"
@@ -52,7 +52,7 @@ inputs = {
       description = "Allow Node.js Backend API traffic"
     },
     {
-      rule        = "mysql-tcp"
+      rule        = "mysql-tcp"          # ← THIS allows port 3306
       description = "Allow RDS Database traffic (Port 3306)"
     }
   ]

@@ -45,12 +45,15 @@ inputs = {
 
   vpc_zone_identifier = dependency.vpc.outputs.private_subnets
 
-  target_group_arns = dependency.alb_internal.outputs.target_group_arns
+  # --- THE FIX: NEW V9 SYNTAX TO ATTACH THE ASG TO THE ALB ---
+  traffic_source_attachments = {
+    internal_alb = {
+      traffic_source_identifier = dependency.alb_internal.outputs.target_group_arns[0]
+      traffic_source_type       = "elbv2"
+    }
+  }
 
   health_check_type   = "ELB" 
-
-  create_traffic_source_attachment = true 
-
 
   min_size         = 2
   max_size         = 4

@@ -16,7 +16,8 @@ inputs = {
   role_requires_mfa     = false
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" # Allows secure SSH-less terminal access via AWS SSM
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   ]
 
   create_instance_profile = true

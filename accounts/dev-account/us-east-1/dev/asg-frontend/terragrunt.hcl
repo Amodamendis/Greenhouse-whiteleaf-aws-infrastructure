@@ -54,8 +54,8 @@ inputs = {
   
   create_traffic_source_attachment = true 
 
-  min_size         = 2
-  max_size         = 4
+  min_size         = 1
+  max_size         = 3
   desired_capacity = 2
 
   user_data = base64encode(file("../scripts/frontend-user-data.sh"))

@@ -38,9 +38,8 @@ inputs = {
     }
   ]
 
-  # 2. Internal Network Rules (Frontend, Backend, Database)
-  # Keeping your internal self-referencing structure, but adding 5000 and 3306
- ingress_with_self = [
+  # 2. Internal Network Rules (Frontend, Backend, Database, and Monitoring)
+  ingress_with_self = [
     {
       rule        = "http-80-tcp"
       description = "Allow traffic from External ALB to React servers"
@@ -52,8 +51,27 @@ inputs = {
       description = "Allow Node.js Backend API traffic"
     },
     {
-      rule        = "mysql-tcp"          # ← THIS allows port 3306
+      rule        = "mysql-tcp"          
       description = "Allow RDS Database traffic (Port 3306)"
+    },
+    # --- NEW OBSERVABILITY PORTS ---
+    {
+      from_port   = 9090
+      to_port     = 9090
+      protocol    = "tcp"
+      description = "Allow Prometheus internal traffic"
+    },
+    {
+      from_port   = 3100
+      to_port     = 3100
+      protocol    = "tcp"
+      description = "Allow Promtail to Loki logs traffic"
+    },
+    {
+      from_port   = 4317
+      to_port     = 4318
+      protocol    = "tcp"
+      description = "Allow OpenTelemetry Collector traces (gRPC/HTTP)"
     }
   ]
 

@@ -55,10 +55,18 @@ inputs = {
 
   health_check_type   = "ELB" 
 
-  min_size         = 2
-  max_size         = 4
+  min_size         = 1
+  max_size         = 3
   desired_capacity = 2
 
+
+  # --- THE FIX: ALLOW DOCKER CONTAINERS TO READ AWS IAM CREDENTIALS ---
+  metadata_options = {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 2  # Increased from 1 to 2 to cross the Docker bridge!
+  }
+  
   # Connect directly to your external backend script
   user_data = base64encode(file("../scripts/backend-user-data.sh"))
 

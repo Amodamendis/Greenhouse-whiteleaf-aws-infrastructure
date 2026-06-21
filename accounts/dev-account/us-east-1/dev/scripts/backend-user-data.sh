@@ -20,8 +20,9 @@ aws ecr get-login-password --region $REGION | docker login --username AWS --pass
 # 4. Pull the latest backend Docker image from ECR
 docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
 
-# 5. Run the container and securely inject the live RDS connection string values
-docker run -d --name backend-app --restart always -p 4000:4000 \
+# 5. THE FIX: Replaced '-p 4000:4000' with '--network host'
+# This allows the container to bypass the Docker bridge and read the AWS IAM keys directly!
+docker run -d --name backend-app --restart always --network host \
   -e DB_HOST="whiteleaf-metadata-db.cg9gqgusejxj.us-east-1.rds.amazonaws.com" \
   -e DB_USER="admin" \
   -e DB_PASSWORD="200317511002" \

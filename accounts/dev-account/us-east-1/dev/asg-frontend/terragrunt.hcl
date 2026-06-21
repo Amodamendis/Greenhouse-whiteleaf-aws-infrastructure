@@ -56,7 +56,7 @@ inputs = {
 
   min_size         = 1
   max_size         = 3
-  desired_capacity = 2
+  desired_capacity = 1
 
   user_data = base64encode(file("../scripts/frontend-user-data.sh"))
 

@@ -57,7 +57,7 @@ inputs = {
 
   min_size         = 1
   max_size         = 3
-  desired_capacity = 2
+  desired_capacity = 1
 
 
   # --- THE FIX: ALLOW DOCKER CONTAINERS TO READ AWS IAM CREDENTIALS ---

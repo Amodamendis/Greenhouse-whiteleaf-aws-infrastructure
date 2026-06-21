@@ -49,10 +49,12 @@ inputs = {
 
   health_check_type   = "ELB"
 
-  target_group_arns = dependency.alb_external.outputs.target_group_arns
-   
-  
-  create_traffic_source_attachment = true 
+  traffic_source_attachments = {
+    external_alb = {
+      traffic_source_identifier = dependency.alb_external.outputs.target_group_arns[0]
+      traffic_source_type       = "elbv2"
+    }
+  } 
 
   min_size         = 1
   max_size         = 3

@@ -28,6 +28,5 @@ docker run -d --name backend-app --restart always --network host \
   -e DB_PASSWORD="200317511002" \
   -e DB_NAME="greenhouse_db" \
   -e DB_PORT="3306" \
-  -e OTEL_SERVICE_NAME="greenhouse-backend-api" \
-  -e OTEL_EXPORTER_OTLP_ENDPOINT="http://10.0.11.38:4318/v1/traces" \
+  -e OTEL_TRACES_EXPORTER="none" \
   $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG

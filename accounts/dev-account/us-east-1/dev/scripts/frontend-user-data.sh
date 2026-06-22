@@ -20,4 +20,10 @@ aws ecr get-login-password --region $REGION | docker login --username AWS --pass
 
 # Pull and Run the Docker Image
 docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
-docker run -d --name frontend-app --restart always -p 80:80 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+
+docker run -d --name frontend-app --restart always -p 80:80 \
+  --log-driver=loki \
+  --log-opt loki-url="http://10.0.11.38:3100/loki/api/v1/push" \
+  --log-opt loki-retries=5 \
+  --log-opt loki-batch-size=400 \
+  $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG

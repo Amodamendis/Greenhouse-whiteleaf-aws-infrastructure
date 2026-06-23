@@ -72,6 +72,12 @@ inputs = {
       to_port     = 4318
       protocol    = "tcp"
       description = "Allow OpenTelemetry Collector traces (gRPC/HTTP)"
+    },
+    {
+      from_port   = 9100
+      to_port     = 9100
+      protocol    = "tcp"
+      description = "Allow Prometheus to scrape Node Exporter metrics"
     }
   ]
 
